@@ -166,7 +166,15 @@ function animationTimeline() {
     .to(".section-three", 0.7, { opacity: 0, y: 10 }, "+=2.5")
     .from(".section-four", 0.7, { scale: 0.2, opacity: 0 })
     .from(".fake-btn", 0.3, { scale: 1, opacity: 1 })
-    .staggerTo(".hbd-chatbox span", 1.5, { visibility: "visible" }, 0.02)
+    .staggerTo(".hbd-chatbox span", 1.5, { 
+        visibility: "visible",
+        onUpdate: function() {
+            const chatbox = document.querySelector(".hbd-chatbox");
+            if (chatbox) {
+                chatbox.scrollTop = chatbox.scrollHeight;
+            }
+        }
+    }, 0.02)
     .to(
       ".fake-btn",
       0.1,
@@ -177,7 +185,7 @@ function animationTimeline() {
         boxShadow: "0 2px 5px rgba(255, 77, 166, 0.4)",
         ease: "power2.inOut",
       },
-      "+=3.5"
+      "+=1.0"
     )
     .to(
       ".fake-btn",
@@ -190,7 +198,15 @@ function animationTimeline() {
       },
       "+=0.1"
     )
-    .to(".section-four", 0.5, { scale: 0.2, opacity: 0, y: -150 }, "+=1")
+    .add(() => {
+        tl.pause();
+        const fakeBtn = document.querySelector(".fake-btn");
+        fakeBtn.addEventListener("click", function onClick() {
+            fakeBtn.removeEventListener("click", onClick);
+            tl.play();
+        });
+    })
+    .to(".section-four", 0.5, { scale: 0.2, opacity: 0, y: -150 }, "+=0.2")
     .from(".idea-1", 0.7, ideaTextTrans)
     .to(".idea-1", 0.7, ideaTextTransLeave, "+=2")
     .from(".idea-2", 0.7, ideaTextTrans)
