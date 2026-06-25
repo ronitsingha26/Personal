@@ -166,7 +166,7 @@ function animationTimeline() {
     .to(".section-three", 0.7, { opacity: 0, y: 10 }, "+=2.5")
     .from(".section-four", 0.7, { scale: 0.2, opacity: 0 })
     .from(".fake-btn", 0.3, { scale: 1, opacity: 1 })
-    .staggerTo(".hbd-chatbox span", 1.5, { visibility: "visible" }, 0.05)
+    .staggerTo(".hbd-chatbox span", 1.5, { visibility: "visible" }, 0.02)
     .to(
       ".fake-btn",
       0.1,

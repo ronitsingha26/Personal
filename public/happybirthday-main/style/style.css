@@ -276,6 +276,24 @@ body {
   color: #eaeaea;
   line-height: 1.8;
   font-size: 18px;
+  white-space: pre-wrap;
+  max-height: 50vh;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.text-box p::-webkit-scrollbar {
+  width: 6px;
+}
+
+.text-box p::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.text-box p::-webkit-scrollbar-thumb {
+  background: #ff4da6;
+  border-radius: 3px;
 }
 
 .text-box span {
