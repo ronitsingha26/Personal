@@ -169,8 +169,23 @@ function animationTimeline() {
     .add(() => {
         const chatbox = document.querySelector(".hbd-chatbox");
         if (chatbox) {
+            chatbox.style.position = "relative";
+            const spans = chatbox.querySelectorAll("span");
+            let currentIndex = 0;
+            
             window.autoScrollInterval = setInterval(() => {
-                chatbox.scrollTop = chatbox.scrollHeight;
+                while (currentIndex < spans.length && spans[currentIndex].style.visibility === "visible") {
+                    currentIndex++;
+                }
+                if (currentIndex > 0 && currentIndex <= spans.length) {
+                    const activeSpan = spans[currentIndex - 1];
+                    const spanBottom = activeSpan.offsetTop + activeSpan.offsetHeight;
+                    const containerBottom = chatbox.scrollTop + chatbox.clientHeight;
+                    
+                    if (spanBottom > containerBottom - 30) {
+                        chatbox.scrollTop = spanBottom - chatbox.clientHeight + 30;
+                    }
+                }
             }, 100);
         }
     })
