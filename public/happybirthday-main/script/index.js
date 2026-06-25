@@ -189,7 +189,7 @@ function animationTimeline() {
             }, 100);
         }
     })
-    .staggerTo(".hbd-chatbox span", 1.5, { visibility: "visible" }, 0.02)
+    .staggerTo(".hbd-chatbox span", 1.5, { visibility: "visible" }, 0.04)
     .add(() => {
         if (window.autoScrollInterval) {
             clearInterval(window.autoScrollInterval);
