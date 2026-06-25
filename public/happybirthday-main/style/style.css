@@ -730,35 +730,350 @@ body {
   font-size: 32px;
 }
 
-/* Responsive */
+/* Responsive - Tablets */
 @media (max-width: 768px) {
   .birthday-card {
     width: 340px;
     height: 480px;
     padding: 30px;
   }
+
+  .card-front h1 {
+    font-size: 38px;
+  }
+
+  .card-front p {
+    font-size: 18px;
+  }
+
+  .card-back h2 {
+    font-size: 36px;
+  }
+
+  .card-back p {
+    font-size: 16px;
+  }
+
+  .envelope-icon {
+    font-size: 70px;
+    margin-bottom: 20px;
+  }
+
+  .open-btn {
+    padding: 14px 40px;
+    font-size: 18px;
+  }
+
+  .preloader h2 {
+    font-size: 2.5rem;
+  }
+
+  .loading-bar {
+    width: 250px;
+  }
+
   .section-one {
     font-size: 3rem;
   }
+
+  .section-two {
+    font-size: 1.2rem;
+    padding-top: 15rem;
+  }
+
   .section-three {
     font-size: 2.5rem;
+    padding: 0 15px;
   }
+
   .section-four .text-box {
-    width: 90%;
-    padding: 20px 20px 60px 20px;
+    width: 92%;
+    padding: 20px 15px 60px 15px;
   }
+
+  .text-box p {
+    font-size: 15px;
+    line-height: 1.7;
+    max-height: 45vh;
+    padding-right: 5px;
+  }
+
+  .text-box .fake-btn {
+    bottom: -60px;
+    right: 15px;
+    padding: 10px 25px;
+    font-size: 14px;
+  }
+
+  .section-five p {
+    font-size: 1.6rem;
+    padding: 0 15px;
+  }
+
+  .section-five .idea-5 {
+    font-size: 3rem;
+    padding: 0 10px;
+  }
+
   .idea-6 span {
     font-size: 10rem;
   }
+
   .profile-picture {
-    width: 250px;
-    height: 250px;
+    width: 220px;
+    height: 220px;
   }
+
+  .hat {
+    width: 80px;
+    font-size: 60px;
+    top: -12%;
+  }
+
+  .wish-hbd {
+    font-size: 2.5rem;
+    padding: 0 10px;
+  }
+
+  .wish h5 {
+    font-size: 1.3rem;
+    padding: 0 15px;
+  }
+
+  .cake-title {
+    font-size: 2.5rem;
+    padding: 0 15px;
+  }
+
   .realistic-cake {
     transform: scale(0.8);
   }
+
+  .blow-instruction {
+    font-size: 1.3rem;
+    padding: 0 15px;
+  }
+
+  .blown-message {
+    font-size: 1.8rem;
+    padding: 0 15px;
+  }
+
+  .section-nine p {
+    font-size: 1.5rem;
+    padding: 0 15px;
+    word-wrap: break-word;
+  }
+
+  .last-smile {
+    font-size: 2.2rem !important;
+    padding: 0 10px;
+  }
+
+  .memories-btn {
+    padding: 12px 30px;
+    font-size: 1rem;
+  }
+
+  .music-control {
+    width: 55px;
+    height: 55px;
+    bottom: 20px;
+    right: 20px;
+  }
+
+  .music-control span {
+    font-size: 26px;
+  }
+}
+
+/* Responsive - Small Phones */
+@media (max-width: 480px) {
+  .birthday-card {
+    width: 92vw;
+    height: 450px;
+  }
+
+  .card-front,
+  .card-back {
+    padding: 30px 20px;
+  }
+
+  .card-front h1 {
+    font-size: 30px;
+  }
+
+  .card-front p {
+    font-size: 16px;
+  }
+
+  .card-back h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+
+  .card-back p {
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  .envelope-icon {
+    font-size: 55px;
+    margin-bottom: 15px;
+  }
+
+  .open-btn {
+    padding: 12px 35px;
+    font-size: 16px;
+  }
+
+  .preloader h2 {
+    font-size: 2rem;
+    padding: 0 15px;
+  }
+
+  .loading-bar {
+    width: 200px;
+  }
+
+  .loading-text {
+    font-size: 1rem;
+  }
+
+  .timeline-container > div {
+    top: 15vh;
+  }
+
+  .section-one {
+    font-size: 2.2rem;
+  }
+
+  .section-two {
+    font-size: 1rem;
+    padding-top: 12rem;
+  }
+
+  .section-three {
+    font-size: 1.8rem;
+    padding: 0 10px;
+  }
+
+  .section-four .text-box {
+    width: 94%;
+    padding: 15px 12px 55px 12px;
+    border-width: 2px;
+    border-radius: 10px;
+  }
+
+  .text-box p {
+    font-size: 13px;
+    line-height: 1.6;
+    max-height: 40vh;
+    padding-right: 4px;
+  }
+
+  .text-box .fake-btn {
+    bottom: -50px;
+    right: 10px;
+    padding: 8px 20px;
+    font-size: 13px;
+  }
+
+  .section-five p {
+    font-size: 1.3rem;
+    padding: 0 10px;
+  }
+
+  .section-five .idea-5 {
+    font-size: 2.2rem;
+    padding: 0 10px;
+  }
+
+  .idea-6 span {
+    font-size: 7rem;
+  }
+
+  .profile-picture {
+    width: 180px;
+    height: 180px;
+    border-width: 3px;
+  }
+
+  .hat {
+    width: 60px;
+    font-size: 50px;
+    top: -10%;
+  }
+
+  .section-six {
+    top: 5vh;
+  }
+
   .wish-hbd {
-    font-size: 3rem;
+    font-size: 1.8rem;
+    padding: 0 10px;
+  }
+
+  .wish h5 {
+    font-size: 1rem;
+    padding: 0 10px;
+  }
+
+  .cake-title {
+    font-size: 1.8rem;
+    padding: 0 10px;
+  }
+
+  .realistic-cake {
+    transform: scale(0.65);
+  }
+
+  .blow-instruction {
+    font-size: 1rem;
+    padding: 0 10px;
+    margin-top: 30px;
+  }
+
+  .blown-message {
+    font-size: 1.4rem;
+    padding: 0 10px;
+    margin-top: 25px;
+  }
+
+  .section-nine p {
+    font-size: 1.2rem;
+    padding: 0 10px;
+    word-wrap: break-word;
+  }
+
+  .last-smile {
+    font-size: 1.6rem !important;
+    padding: 0 10px;
+  }
+
+  .memories-btn {
+    padding: 10px 25px;
+    font-size: 0.9rem;
+  }
+
+  .music-control {
+    width: 48px;
+    height: 48px;
+    bottom: 15px;
+    right: 15px;
+  }
+
+  .music-control span {
+    font-size: 22px;
+  }
+
+  .balloon {
+    font-size: 40px;
+  }
+
+  .confetti {
+    width: 8px;
+    height: 8px;
   }
 }
 
