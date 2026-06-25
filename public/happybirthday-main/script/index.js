@@ -125,6 +125,17 @@ function createCandles() {
 }
 
 // Main GSAP Animation Timeline
+// Helper to activate only one section at a time for pointer-events
+function activateSection(sectionSelector) {
+  document.querySelectorAll('.timeline-container > div').forEach(div => {
+    div.classList.remove('section-active');
+  });
+  if (sectionSelector) {
+    const el = document.querySelector(sectionSelector);
+    if (el) el.classList.add('section-active');
+  }
+}
+
 function animationTimeline() {
   const textBoxChars = document.querySelector(".hbd-chatbox");
   const hbd = document.querySelector(".wish-hbd");
@@ -158,12 +169,15 @@ function animationTimeline() {
   tl = gsap.timeline();
 
   tl.to(".timeline-container", 0.6, { visibility: "visible" })
+    .add(() => activateSection('.section-one'))
     .from(".section-one", 0.7, { opacity: 0, y: 10 })
     .from(".section-two", 0.4, { opacity: 0, y: 10 })
     .to(".section-one", 0.7, { opacity: 0, y: 10 }, "+=3")
     .to(".section-two", 0.7, { opacity: 0, y: 10 }, "-=1")
+    .add(() => activateSection('.section-three'))
     .from(".section-three", 0.7, { opacity: 0, y: 10 })
     .to(".section-three", 0.7, { opacity: 0, y: 10 }, "+=2.5")
+    .add(() => activateSection('.section-four'))
     .from(".section-four", 0.7, { scale: 0.2, opacity: 0 })
     .from(".fake-btn", 0.3, { scale: 1, opacity: 1 })
     .add(() => {
@@ -227,6 +241,7 @@ function animationTimeline() {
         });
     })
     .to(".section-four", 0.5, { scale: 0.2, opacity: 0, y: -150 }, "+=0.2")
+    .add(() => activateSection('.section-five'))
     .from(".idea-1", 0.7, ideaTextTrans)
     .to(".idea-1", 0.7, ideaTextTransLeave, "+=2")
     .from(".idea-2", 0.7, ideaTextTrans)
@@ -275,6 +290,7 @@ function animationTimeline() {
       0.2,
       "+=1.5"
     )
+    .add(() => activateSection('.section-six'))
     .from(".section-six .profile-picture", 0.5, {
       scale: 3.5,
       opacity: 0,
@@ -325,6 +341,7 @@ function animationTimeline() {
       "party"
     )
     .to(".section-six", 0.5, { opacity: 0, y: 30 }, "+=2")
+    .add(() => activateSection('.section-cake'))
     .from(".section-cake", 0.7, { opacity: 0, scale: 0.5 })
     .add(() => {
       createCandles();
@@ -333,6 +350,7 @@ function animationTimeline() {
       startMicrophoneDetection();
     })
     .to(".section-cake", 0.5, { opacity: 0 })
+    .add(() => activateSection('.section-nine'))
     .to(".section-nine", 0.7, { opacity: 1 })
     .from(".section-nine p", 0.7, {
       opacity: 0,
@@ -386,97 +404,97 @@ function stopMicrophoneDetection() {
   isListening = false;
 }
 
-// Check if we already have microphone permission
-async function checkMicrophonePermission() {
-  try {
-    const permissions = await navigator.permissions.query({
-      name: "microphone",
-    });
-    return permissions.state === "granted";
-  } catch (err) {
-    return false;
-  }
+// Detect if mobile device
+function isMobileDevice() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    || (navigator.maxTouchPoints && navigator.maxTouchPoints > 2);
 }
+
+let blowFallbackTimeout = null;
 
 async function startMicrophoneDetection() {
   if (candlesBlown || isListening) return;
 
+  // On mobile, skip mic entirely and go straight to tap fallback
+  if (isMobileDevice()) {
+    setupTapFallback();
+    return;
+  }
+
+  // Desktop: try microphone
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
     setupClickFallback();
     return;
   }
 
-  const hasPermission = await checkMicrophonePermission();
-
-  if (hasPermission) {
-    // Already have permission - go straight to detection
-    requestMicPermission();
-  } else {
-    // Need permission - pause everything and show instruction
-    pauseExperience();
-    showPermissionRequest();
+  // Try to get mic directly (works on both desktop browsers)
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    micStream = stream;
+    setupAudioAnalysis(stream);
+  } catch (err) {
+    console.error("Microphone access denied:", err);
+    setupClickFallback();
   }
 }
 
-function pauseExperience() {
-  // Pause timeline
-  if (tl && !tl.paused()) {
-    tl.pause();
-  }
-  // Pause music
-  if (musicPlaying) {
-    bgMusic.pause();
-    musicIcon.textContent = "🔇";
-  }
-}
-
-function resumeExperience() {
-  // Resume timeline
-  if (tl && tl.paused() && !waitingForBlow) {
-    tl.resume();
-  }
-  // Resume music
-  if (musicPlaying) {
-    bgMusic.play().catch(e => console.log(e));
-    musicIcon.textContent = "🔊";
-  }
-}
-
-function showPermissionRequest() {
-  blowInstruction.textContent = "🎤 Click here to enable microphone...";
+function setupTapFallback() {
+  blowInstruction.textContent = "🎂 Tap the cake to blow out candles! 🎂";
   blowInstruction.style.animation = "pulse 2s infinite";
-  blowInstruction.addEventListener("click", requestMicPermission, {
-    once: true,
-  });
-}
 
-function requestMicPermission() {
-  blowInstruction.textContent = "🎤 Requesting microphone access...";
+  // Make cake and instruction both tappable
+  function handleTap(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    cakeElement.removeEventListener("click", handleTap);
+    cakeElement.removeEventListener("touchend", handleTap);
+    blowInstruction.removeEventListener("click", handleTap);
+    blowInstruction.removeEventListener("touchend", handleTap);
+    blowCandles();
+  }
 
-  navigator.mediaDevices
-    .getUserMedia({ audio: true })
-    .then((stream) => {
-      micStream = stream;
-      setupAudioAnalysis(stream);
-      resumeExperience();
-    })
-    .catch((err) => {
-      console.error("Microphone access denied:", err);
-      setupClickFallback();
-      resumeExperience();
-    });
+  cakeElement.addEventListener("click", handleTap, { once: false });
+  cakeElement.addEventListener("touchend", handleTap, { once: false });
+  blowInstruction.addEventListener("click", handleTap, { once: false });
+  blowInstruction.addEventListener("touchend", handleTap, { once: false });
 }
 
 function setupClickFallback() {
   blowInstruction.textContent = "💡 Click the cake to blow out candles! 💡";
   blowInstruction.style.animation = "pulse 2s infinite";
-  cakeElement.addEventListener("click", blowCandles, { once: true });
+
+  function handleClick(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    cakeElement.removeEventListener("click", handleClick);
+    blowInstruction.removeEventListener("click", handleClick);
+    blowCandles();
+  }
+
+  cakeElement.addEventListener("click", handleClick, { once: false });
+  blowInstruction.addEventListener("click", handleClick, { once: false });
 }
 
 function setupAudioAnalysis(stream) {
   blowInstruction.textContent =
     "🌬️ Blow into your mic to blow out the candles! 🌬️";
   blowInstruction.style.animation = "pulse 2s infinite";
+
+  // Auto-fallback: if blow not detected in 10 seconds, show click option
+  blowFallbackTimeout = setTimeout(() => {
+    if (!candlesBlown) {
+      blowInstruction.textContent = "💡 Blow didn't work? Click the cake! 💡";
+      function handleFallbackClick(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        cakeElement.removeEventListener("click", handleFallbackClick);
+        blowInstruction.removeEventListener("click", handleFallbackClick);
+        blowCandles();
+      }
+      cakeElement.addEventListener("click", handleFallbackClick);
+      blowInstruction.addEventListener("click", handleFallbackClick);
+    }
+  }, 10000);
 
   try {
     audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -503,7 +521,9 @@ function setupAudioAnalysis(stream) {
       }
       const average = sum / dataArray.length;
 
-      if (average > 35) {
+      // Lower threshold for easier detection
+      if (average > 25) {
+        if (blowFallbackTimeout) clearTimeout(blowFallbackTimeout);
         stopMicrophoneDetection();
         blowCandles();
         return;
@@ -515,6 +535,7 @@ function setupAudioAnalysis(stream) {
     detectBlow();
   } catch (err) {
     console.error("Audio setup error:", err);
+    if (blowFallbackTimeout) clearTimeout(blowFallbackTimeout);
     stopMicrophoneDetection();
     setupClickFallback();
   }
