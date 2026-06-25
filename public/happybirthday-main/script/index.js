@@ -166,15 +166,20 @@ function animationTimeline() {
     .to(".section-three", 0.7, { opacity: 0, y: 10 }, "+=2.5")
     .from(".section-four", 0.7, { scale: 0.2, opacity: 0 })
     .from(".fake-btn", 0.3, { scale: 1, opacity: 1 })
-    .staggerTo(".hbd-chatbox span", 1.5, { 
-        visibility: "visible",
-        onUpdate: function() {
-            const chatbox = document.querySelector(".hbd-chatbox");
-            if (chatbox) {
+    .add(() => {
+        const chatbox = document.querySelector(".hbd-chatbox");
+        if (chatbox) {
+            window.autoScrollInterval = setInterval(() => {
                 chatbox.scrollTop = chatbox.scrollHeight;
-            }
+            }, 100);
         }
-    }, 0.02)
+    })
+    .staggerTo(".hbd-chatbox span", 1.5, { visibility: "visible" }, 0.02)
+    .add(() => {
+        if (window.autoScrollInterval) {
+            clearInterval(window.autoScrollInterval);
+        }
+    })
     .to(
       ".fake-btn",
       0.1,
